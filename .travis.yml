@@ -1,0 +1,25 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+# Set Xcode version to 10.1 (default is 9.4)
+osx_image: xcode10.1
+  
+compiler:
+  - gcc
+  - clang
+
+sudo: required
+dist: xenial
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ../Simd/prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF
+
+script: 
+  - make
+  - cp -R ../Simd/data ../../
+  - ./Test
