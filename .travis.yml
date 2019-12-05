@@ -17,9 +17,9 @@ dist: xenial
 before_script:
   - mkdir build
   - cd build
-  - cmake ../Simd/prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF
+  - cmake ../s-trinh/Simd/prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF
 
 script: 
   - make
-  - cp -R ../Simd/data ../../
+  - cp -R ../s-trinh/Simd/data ../../
   - ./Test
