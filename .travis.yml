@@ -24,3 +24,7 @@ script:
   - cp -R ../data ../../
   - cat /proc/cpuinfo
   - ./Test
+  - cd ../test
+  - cmake . -DCMAKE_BUILD_TYPE=Debug
+  - make
+  - valgrind --track-origins=yes ./UseFaceDetection
