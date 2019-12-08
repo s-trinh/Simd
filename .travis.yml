@@ -61,7 +61,7 @@ script:
       ./UseFaceDetection;
     fi;
   - if [ $SANITIZER = 'false' ]; then
-      valgrind --track-origins=yes ./UseFaceDetection2;
+      valgrind --track-origins=yes ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png;
     else
       ./UseFaceDetection2;
     fi;
