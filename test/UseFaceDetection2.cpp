@@ -6,10 +6,16 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-int main(int , char * [])
+int main(int argc, char * argv[])
 {
+    std::string filename = "1280px-Solvay_conference_1927.png";
+    for (int i = 1; i < argc; i++) {
+        if (std::string(argv[i]) == "--input" && i+1 < argc) {
+            filename = std::string(argv[i+1]);
+        }
+    }
+
     int width = 0, height = 0, channels = 0;
-    const std::string filename = "1280px-Solvay_conference_1927.png";
     unsigned char *image = stbi_load(filename.c_str(), &width, &height, &channels, STBI_grey);
     std::cout << "width: " << width << " ; height: " << height << " ; channels: " << channels << std::endl;
     if (image == NULL) {

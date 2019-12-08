@@ -6,7 +6,7 @@ os:
 
 # Set Xcode version to 10.1 (default is 9.4)
 osx_image: xcode10.1
-  
+
 compiler:
   - gcc
   - clang
@@ -23,15 +23,32 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - "if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=memory; else cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=address; fi"
+  - if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
+        cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=memory;
+    else
+        cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=address;
+    fi
 
-script: 
+script:
   - make
   - cp -R ../data ../../
   - cat /proc/cpuinfo
   - ./Test
+  - ./Test -fi=TransformImage
   - cd ../test
-  - "if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=memory; else cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=address; fi"
+  - if [ $TRAVIS_OS_NAME = 'linux' ]; then
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a;
+    else
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a;
+    fi;
+  - make
+  - valgrind --track-origins=yes ./UseFaceDetection
+  - valgrind --track-origins=yes ./UseFaceDetection2
+  - if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=memory;
+    else
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=address;
+    fi
   - make
   - ./UseFaceDetection
-  - valgrind --track-origins=yes ./UseFaceDetection
+  - ./UseFaceDetection2
