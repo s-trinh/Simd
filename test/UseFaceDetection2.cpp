@@ -17,7 +17,6 @@ int main(int argc, char * argv[])
 
     int width = 0, height = 0, channels = 0;
     unsigned char *image = stbi_load(filename.c_str(), &width, &height, &channels, STBI_grey);
-    std::cout << "width: " << width << " ; height: " << height << " ; channels: " << channels << std::endl;
     if (image == NULL) {
         std::cerr << "Cannot read: " << filename << std::endl;
         return EXIT_FAILURE;

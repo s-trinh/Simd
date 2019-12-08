@@ -11,7 +11,6 @@ int main(int , char * [])
     int width = 0, height = 0, channels = 0;
     const std::string filename = "1280px-Solvay_conference_1927.png";
     unsigned char *image = stbi_load(filename.c_str(), &width, &height, &channels, STBI_grey);
-    std::cout << "width: " << width << " ; height: " << height << " ; channels: " << channels << std::endl;
     if (image == NULL) {
         std::cerr << "Cannot read: " << filename << std::endl;
         return EXIT_FAILURE;
