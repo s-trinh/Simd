@@ -11,6 +11,10 @@ compiler:
   - gcc
   - clang
 
+env:
+  - SANITIZER=true
+  - SANITIZER=false
+
 sudo: required
 dist: xenial
 
@@ -23,7 +27,9 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
+  - if [ $SANITIZER = 'false' ]; then
+        cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF
+    elif [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
         cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=memory;
     else
         cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=address;
@@ -36,19 +42,26 @@ script:
   - ./Test
   - ./Test -fi=TransformImage
   - cd ../test
-  - if [ $TRAVIS_OS_NAME = 'linux' ]; then
-        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a;
+  - if [ $SANITIZER = 'false' ]; then
+        if [ $TRAVIS_OS_NAME = 'linux' ]; then
+            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a;
+        else
+            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a;
+        fi;
     else
-        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a;
+        if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
+            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a -DCMAKE_CXX_FLAGS=-fsanitize=memory;
+        elif [ $TRAVIS_OS_NAME = 'linux' ]
+            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a -DCMAKE_CXX_FLAGS=-fsanitize=address;
+        else
+            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a -DCMAKE_CXX_FLAGS=-fsanitize=address;
+        fi;
     fi;
   - make
-  - valgrind --track-origins=yes ./UseFaceDetection
-  - valgrind --track-origins=yes ./UseFaceDetection2
-  - if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
-        cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=memory;
+  - if [ $SANITIZER = 'false' ]; then
+      valgrind --track-origins=yes ./UseFaceDetection;
+      valgrind --track-origins=yes ./UseFaceDetection2;
     else
-        cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=address;
-    fi
-  - make
-  - ./UseFaceDetection
-  - ./UseFaceDetection2
+      ./UseFaceDetection;
+      ./UseFaceDetection2;
+    fi;
