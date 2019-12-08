@@ -11,6 +11,7 @@ find_package(Threads)
 set(SRCS
     UseFaceDetection.cpp
     UseFaceDetection2.cpp
+    UseFaceDetection3.cpp
     )
 
 set(HEADERS

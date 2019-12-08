@@ -3,32 +3,11 @@
 
 #include "Simd/SimdDetection.hpp"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 int main(int argc, char * argv[])
 {
-    std::string filename = "1280px-Solvay_conference_1927.png";
-    for (int i = 1; i < argc; i++) {
-        if (std::string(argv[i]) == "--input" && i+1 < argc) {
-            filename = std::string(argv[i+1]);
-        }
-    }
-
-    int width = 0, height = 0, channels = 0;
-    unsigned char *image = stbi_load(filename.c_str(), &width, &height, &channels, STBI_grey);
-    if (image == NULL) {
-        std::cerr << "Cannot read: " << filename << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    //copy
+    int width = 640, height = 480;
     unsigned char * bitmap = new unsigned char[width*height];
-    memcpy(bitmap, image, width*height);
-
-    stbi_image_free(image);
-
-    SimdSetThreadNumber(1);
+    memset(bitmap, 0, width*height);
 
     typedef Simd::Detection<Simd::Allocator> Detection;
     Detection detection;
@@ -47,5 +26,5 @@ int main(int argc, char * argv[])
 
     delete[] bitmap;
 
-    return EXIT_SUCCESS;
+    return 0;
 }

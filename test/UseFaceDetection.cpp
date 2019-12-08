@@ -22,6 +22,8 @@ int main(int , char * [])
 
     stbi_image_free(image);
 
+    SimdSetThreadNumber(1);
+
     typedef Simd::Detection<Simd::Allocator> Detection;
     Detection detection;
     if (detection.Load("haar_face_0.xml")) {
