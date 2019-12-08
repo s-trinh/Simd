@@ -28,7 +28,7 @@ before_script:
   - mkdir build
   - cd build
   - if [ $SANITIZER = 'false' ]; then
-        cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF
+        cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF;
     elif [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
         cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=memory;
     else
