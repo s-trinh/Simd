@@ -23,7 +23,7 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=memory
+  - "if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=memory; else cmake ../prj/cmake -DCMAKE_BUILD_TYPE=Debug -DSIMD_AVX512=OFF -DCMAKE_CXX_FLAGS=-fsanitize=address; fi"
 
 script: 
   - make
@@ -31,6 +31,7 @@ script:
   - cat /proc/cpuinfo
   - ./Test
   - cd ../test
-  - cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=memory
+  - "if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=memory; else cmake . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=address; fi"
   - make
+  - ./UseFaceDetection
   - valgrind --track-origins=yes ./UseFaceDetection
