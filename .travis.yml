@@ -57,8 +57,11 @@ script:
   - make
   - if [ $SANITIZER = 'false' ]; then
       valgrind --track-origins=yes ./UseFaceDetection;
-      valgrind --track-origins=yes ./UseFaceDetection2;
     else
       ./UseFaceDetection;
+    fi;
+  - if [ $SANITIZER = 'false' ]; then
+      valgrind --track-origins=yes ./UseFaceDetection2;
+    else
       ./UseFaceDetection2;
     fi;
