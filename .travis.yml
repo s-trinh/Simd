@@ -42,20 +42,17 @@ script:
   - ./Test
   - ./Test -fi=TransformImage
   - cd ../test
-  - if [ $SANITIZER = 'false' ]; then
-        if [ $TRAVIS_OS_NAME = 'linux' ]; then
-            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a;
-        else
-            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a;
-        fi;
+  - if [ $TRAVIS_OS_NAME = 'linux' ]; then
+        export LIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a;
     else
-        if [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
-            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a -DCMAKE_CXX_FLAGS=-fsanitize=memory;
-        elif [ $TRAVIS_OS_NAME = 'linux' ]
-            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/home/travis/build/s-trinh/Simd/build/libSimd.a -DCMAKE_CXX_FLAGS=-fsanitize=address;
-        else
-            cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a -DCMAKE_CXX_FLAGS=-fsanitize=address;
-        fi;
+        export LIBSIMD=/Users/travis/build/s-trinh/Simd/build/libSimd.a;
+    fi;
+  - if [ $SANITIZER = 'false' ]; then
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=$LIBSIMD;
+    elif [ $TRAVIS_OS_NAME = 'linux' ] && [ $TRAVIS_COMPILER = 'clang' ]; then
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=$LIBSIMD -DCMAKE_CXX_FLAGS=-fsanitize=memory;
+    else
+        cmake . -DCMAKE_BUILD_TYPE=Debug -DLIBSIMD=$LIBSIMD -DCMAKE_CXX_FLAGS=-fsanitize=address;
     fi;
   - make
   - if [ $SANITIZER = 'false' ]; then
