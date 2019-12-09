@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-#define SIMD_AVX2_DISABLE
-
 #include "Simd/SimdDetection.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION

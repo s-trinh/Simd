@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-#define SIMD_AVX2_DISABLE
-
 #include "Simd/SimdDetection.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -10,7 +8,7 @@
 
 int main(int argc, char * argv[])
 {
-    std::string filename = "1280px-Solvay_conference_1927.png";
+    std::string filename = "";
     for (int i = 1; i < argc; i++) {
         if (std::string(argv[i]) == "--input" && i+1 < argc) {
             filename = std::string(argv[i+1]);
@@ -29,6 +27,8 @@ int main(int argc, char * argv[])
     memcpy(bitmap, image, width*height);
 
     stbi_image_free(image);
+
+    std::cout << "width: " << width << " ; height: " << height << " ; channels: " << std::endl;
 
     SimdSetThreadNumber(1);
 
