@@ -61,6 +61,6 @@ script:
       valgrind --track-origins=yes ./UseFaceDetection3;
     else
       ./UseFaceDetection;
-      ./UseFaceDetection2;
+      ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png;
       ./UseFaceDetection3;
     fi;
