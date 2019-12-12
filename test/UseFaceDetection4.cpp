@@ -8,7 +8,7 @@
 
 int main(int argc, char * argv[])
 {
-    std::string filename = "";
+    std::string filename = "1280px-Solvay_conference_1927.png";
     for (int i = 1; i < argc; i++) {
         if (std::string(argv[i]) == "--input" && i+1 < argc) {
             filename = std::string(argv[i+1]);
