@@ -12,6 +12,7 @@ set(SRCS
     UseFaceDetection.cpp
     UseFaceDetection2.cpp
     UseFaceDetection3.cpp
+    UseFaceDetection4.cpp
     )
 
 set(HEADERS
