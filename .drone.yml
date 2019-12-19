@@ -24,8 +24,10 @@ steps:
     - cmake ../prj/cmake $CMAKE_FLAGS ..
     - make -j
     - export LIBSIMD=$(pwd)/libSimd.a
+    - echo $LIBSIMD
     - cd ../test
     - cmake . -DLIBSIMD=$LIBSIMD
+    - make -j
     - ./UseFaceDetection
     - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
     - ./UseFaceDetection3
@@ -58,8 +60,10 @@ steps:
     - cmake ../prj/cmake $CMAKE_FLAGS ..
     - make -j
     - export LIBSIMD=$(pwd)/libSimd.a
+    - echo $LIBSIMD
     - cd ../test
     - cmake . -DLIBSIMD=$LIBSIMD
+    - make -j
     - ./UseFaceDetection
     - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
     - ./UseFaceDetection3
@@ -92,8 +96,10 @@ steps:
     - cmake ../prj/cmake $CMAKE_FLAGS ..
     - make -j
     - export LIBSIMD=$(pwd)/libSimd.a
+    - echo $LIBSIMD
     - cd ../test
     - cmake . -DLIBSIMD=$LIBSIMD
+    - make -j
     - ./UseFaceDetection
     - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
     - ./UseFaceDetection3
