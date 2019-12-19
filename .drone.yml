@@ -52,7 +52,7 @@ steps:
     - echo "CMAKE_FLAGS:= $CMAKE_FLAGS"
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update -y
-    - apt-get install -y make $CC cmake git-core
+    - apt-get install -y make $CC g++ cmake git-core
     - $CC --version
     - mkdir build && cd build
     - cmake ../prj/cmake $CMAKE_FLAGS
@@ -86,7 +86,7 @@ steps:
     - echo "CMAKE_FLAGS:= $CMAKE_FLAGS"
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update -y
-    - apt-get install -y make $CC cmake git-core
+    - apt-get install -y make $CC g++ cmake git-core
     - $CC --version
     - mkdir build && cd build
     - cmake ../prj/cmake $CMAKE_FLAGS
