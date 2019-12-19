@@ -1,0 +1,101 @@
+---
+kind: pipeline
+name: arm64_clang_cmake
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Build and Test
+  image: ubuntu:19.04
+  environment:
+    CC: clang
+    CMAKE_FLAGS: '-DSIMD_AVX512=OFF'
+  commands:
+    - echo "CMAKE_FLAGS:= $CMAKE_FLAGS"
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update -y
+    - apt-get install -y make $CC cmake git-core
+    - $CC --version
+    - mkdir build && cd build
+    - export CC=/usr/bin/clang
+    - export CXX=/usr/bin/clang++
+    - cmake ../prj/cmake $CMAKE_FLAGS ..
+    - make -j
+    - export LIBSIMD=$(pwd)/libSimd.a
+    - cd ../test
+    - cmake . -DLIBSIMD=$LIBSIMD
+    - ./UseFaceDetection
+    - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
+    - ./UseFaceDetection3
+    - ./UseFaceDetection4
+    - ./UseFaceDetection4 --input 1280px-Solvay_conference_1927.png
+
+---
+kind: pipeline
+name: arm64_gcc_cmake
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Build and Test
+  image: ubuntu:18.04
+  environment:
+    CC: gcc
+    CMAKE_FLAGS: '-DSIMD_AVX512=OFF'
+  commands:
+    - echo "CMAKE_FLAGS:= $CMAKE_FLAGS"
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update -y
+    - apt-get install -y make $CC cmake git-core
+    - $CC --version
+    - mkdir build && cd build
+    - export CC=/usr/bin/clang
+    - export CXX=/usr/bin/clang++
+    - cmake ../prj/cmake $CMAKE_FLAGS ..
+    - make -j
+    - export LIBSIMD=$(pwd)/libSimd.a
+    - cd ../test
+    - cmake . -DLIBSIMD=$LIBSIMD
+    - ./UseFaceDetection
+    - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
+    - ./UseFaceDetection3
+    - ./UseFaceDetection4
+    - ./UseFaceDetection4 --input 1280px-Solvay_conference_1927.png
+
+---
+kind: pipeline
+name: arm32_gcc_cmake
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: Build and Test (32 bits)
+  image: ubuntu:18.04
+  environment:
+    CC: gcc
+    CMAKE_FLAGS: '-DSIMD_AVX512=OFF'
+  commands:
+    - echo "CMAKE_FLAGS:= $CMAKE_FLAGS"
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update -y
+    - apt-get install -y make $CC cmake git-core
+    - $CC --version
+    - mkdir build && cd build
+    - export CC=/usr/bin/clang
+    - export CXX=/usr/bin/clang++
+    - cmake ../prj/cmake $CMAKE_FLAGS ..
+    - make -j
+    - export LIBSIMD=$(pwd)/libSimd.a
+    - cd ../test
+    - cmake . -DLIBSIMD=$LIBSIMD
+    - ./UseFaceDetection
+    - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
+    - ./UseFaceDetection3
+    - ./UseFaceDetection4
+    - ./UseFaceDetection4 --input 1280px-Solvay_conference_1927.png
