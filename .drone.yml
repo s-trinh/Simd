@@ -21,7 +21,7 @@ steps:
     - mkdir build && cd build
     - export CC=/usr/bin/clang
     - export CXX=/usr/bin/clang++
-    - cmake ../prj/cmake $CMAKE_FLAGS ..
+    - cmake ../prj/cmake $CMAKE_FLAGS
     - make -j
     - export LIBSIMD=$(pwd)/libSimd.a
     - echo $LIBSIMD
@@ -57,7 +57,7 @@ steps:
     - mkdir build && cd build
     - export CC=/usr/bin/clang
     - export CXX=/usr/bin/clang++
-    - cmake ../prj/cmake $CMAKE_FLAGS ..
+    - cmake ../prj/cmake $CMAKE_FLAGS
     - make -j
     - export LIBSIMD=$(pwd)/libSimd.a
     - echo $LIBSIMD
@@ -93,7 +93,7 @@ steps:
     - mkdir build && cd build
     - export CC=/usr/bin/clang
     - export CXX=/usr/bin/clang++
-    - cmake ../prj/cmake $CMAKE_FLAGS ..
+    - cmake ../prj/cmake $CMAKE_FLAGS
     - make -j
     - export LIBSIMD=$(pwd)/libSimd.a
     - echo $LIBSIMD
