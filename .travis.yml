@@ -60,10 +60,9 @@ script:
       valgrind --track-origins=yes ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png;
       valgrind --track-origins=yes ./UseFaceDetection3;
       valgrind --track-origins=yes ./UseFaceDetection4;
-    else
-      ./UseFaceDetection;
-      ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png;
-      ./UseFaceDetection3;
-      ./UseFaceDetection4;
-      ./UseFaceDetection4 --input 1280px-Solvay_conference_1927.png;
     fi;
+  - ./UseFaceDetection
+  - ./UseFaceDetection2 --input 1280px-Solvay_conference_1927.png
+  - ./UseFaceDetection3
+  - ./UseFaceDetection4
+  - ./UseFaceDetection4 --input 1280px-Solvay_conference_1927.png
