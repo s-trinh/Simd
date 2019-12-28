@@ -55,8 +55,6 @@ int main(int argc, char * argv[])
         Detection::View canvas(width, height, width*3, Detection::View::Bgr24, bgr);
 
         for (size_t i = 0; i < objects.size(); i++) {
-            std::cout << i << ") " << objects[i].rect.Left() << ", " << objects[i].rect.Top() << " ; "
-                      << objects[i].rect.Width() << "x" << objects[i].rect.Height() << std::endl;
             Simd::DrawRectangle(canvas, objects[i].rect, Simd::Pixel::Bgr24(255, 0, 0), 3);
         }
 
