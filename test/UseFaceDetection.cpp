@@ -2,9 +2,12 @@
 #include <string>
 
 #include "Simd/SimdDetection.hpp"
+#include "Simd/SimdDrawing.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
 int main(int , char * [])
 {
@@ -37,6 +40,25 @@ int main(int , char * [])
             std::cout << i << ") " << objects[i].rect.Left() << ", " << objects[i].rect.Top() << " ; "
                       << objects[i].rect.Width() << "x" << objects[i].rect.Height() << std::endl;
         }
+
+        unsigned char * bgr = new unsigned char[width*height*3];
+        SimdGrayToBgr(bitmap, width, height, width, bgr, width*3);
+
+        Detection::View canvas(width, height, width*3, Detection::View::Bgr24, bgr);
+
+        for (size_t i = 0; i < objects.size(); i++) {
+            std::cout << i << ") " << objects[i].rect.Left() << ", " << objects[i].rect.Top() << " ; "
+                      << objects[i].rect.Width() << "x" << objects[i].rect.Height() << std::endl;
+            Simd::DrawRectangle(canvas, objects[i].rect, Simd::Pixel::Bgr24(255, 0, 0), 3);
+        }
+
+        const int stride_in_bytes = width*3;
+        int res = stbi_write_png("faces_detection.png", width, height, STBI_rgb, bgr, stride_in_bytes);
+        if (res == 0) {
+            std::cerr << "Cannot write detected faces." << std::endl;
+            return EXIT_FAILURE;
+        }
+        delete[] bgr;
     }
 
     delete[] bitmap;

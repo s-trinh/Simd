@@ -17,6 +17,7 @@ set(SRCS
 
 set(HEADERS
     stb_image.h
+    stb_image_write.h
     )
 
 include_directories(../src
